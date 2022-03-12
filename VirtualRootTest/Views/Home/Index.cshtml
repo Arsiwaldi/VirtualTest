@@ -1,0 +1,38 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div>
+    <p>Test me</p>
+    <a class="btn btn-info" asp-controller="Home" asp-action="GetInfo" onclick="testMe(event,this)">Relative with tagHelpers</a>
+    <a class="btn btn-info" href="~/Home/GetInfo" onclick="testMe(event,this)">Relative with tilda</a>
+    <a class="btn btn-info" href="/Home/GetInfo" onclick="testMe(event,this)">Relative without tilda</a>
+    <a class="btn btn-primary" asp-controller="Home" asp-action="GetInfo" onclick="downloadData(event)">Test download</a>
+</div>
+
+<script>
+    function testMe(event, btn) {
+        event.preventDefault();
+        var btnHref = btn.getAttribute("href");
+        alert(`My href is: ${btnHref}`);
+    };
+
+    function downloadData(event) {
+        event.preventDefault();
+        var baseUrl = document.getElementsByTagName('base')[0].href;
+
+        const xhr = new XMLHttpRequest();
+        const url = baseUrl + "Home/GetInfo";;
+
+        xhr.responseType = 'text';
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                alert(xhr.response);
+            }
+        };
+
+        xhr.open('GET', url);
+        xhr.send();
+    }
+
+</script>
